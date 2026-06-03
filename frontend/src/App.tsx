@@ -1,20 +1,7 @@
 import { useState, useEffect } from 'react'
-
-type Category = {
-  id: number
-  name: string
-}
-
-type Task = {
-  id: number
-  category_id: number
-  category: Category
-  title: string
-  due_date: string | null
-  completed: boolean
-  notes: string
-  created_at: string
-}
+import { TaskForm } from './components/TaskForm'
+import { TaskList } from './components/TaskList'
+import type { Task } from './types'
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([])
@@ -53,36 +40,16 @@ function App() {
   return (
     <div>
       <h1>引越しチェックリスト</h1>
-
-      <div>
-        <select value={categoryId} onChange={e => setCategoryId(Number(e.target.value))}>
-          <option value={1}>行政系</option>
-          <option value={2}>ライフライン系</option>
-        </select>
-        <input
-          type="text"
-          placeholder="手続き名"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="メモ"
-          value={notes}
-          onChange={e => setNotes(e.target.value)}
-        />
-        <button onClick={handleCreate}>追加</button>
-      </div>
-
-      <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
-            [{task.category?.name}] {task.title} - {task.completed ? '完了' : (
-              <button onClick={() => handleComplete(task.id)}>完了にする</button>
-            )}
-          </li>
-        ))}
-      </ul>
+      <TaskForm
+        categoryId={categoryId}
+        title={title}
+        notes={notes}
+        onCategoryChange={setCategoryId}
+        onTitleChange={setTitle}
+        onNotesChange={setNotes}
+        onSubmit={handleCreate}
+      />
+      <TaskList tasks={tasks} onComplete={handleComplete} />
     </div>
   )
 }
