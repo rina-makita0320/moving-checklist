@@ -2,9 +2,12 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rina-makita0320/moving-checklist/internal/database"
 )
 
 func main() {
+	database.Connect()
+
 	r := gin.Default()
 
 	r.GET("/health", func(c *gin.Context) {
