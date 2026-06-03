@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/rina-makita0320/moving-checklist/internal/database"
 	"github.com/rina-makita0320/moving-checklist/internal/handler"
@@ -11,6 +12,11 @@ func main() {
 
 	r := gin.Default()
 
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{"GET", "POST", "PATCH"},
+		AllowHeaders: []string{"Content-Type"},
+	}))
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok"})
 	})
